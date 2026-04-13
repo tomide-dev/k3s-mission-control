@@ -27,7 +27,7 @@ spec:
             - secretRef:
                 name: mission-control-secret
 
-          volumeMounts:  
+          volumeMounts:
             - name: app-storage
               mountPath: /app/data
 
@@ -38,3 +38,9 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "200m"
+
+      # ✅ ADD THIS BLOCK
+      volumes:
+        - name: app-storage
+          persistentVolumeClaim:
+            claimName: mission-control-pvc
