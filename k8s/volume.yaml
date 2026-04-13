@@ -1,25 +1,24 @@
-# PersistentVolume — the actual storage on the EC2 host
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-name: mission-control-pv
+  name: mission-control-pv
 spec:
-capacity:
-storage: 500Mi
-accessModes:
-- ReadWriteOnce
-persistentVolumeReclaimPolicy: Retain
-hostPath:
-path: /data/mission-control # directory on the EC2 instance
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /data/mission-control   # directory on EC2
+
 ---
-# PersistentVolumeClaim — the Pod requests storage
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-name: mission-control-pvc
+  name: mission-control-pvc
 spec:
-accessModes:
-- ReadWriteOnce
-resources:
-requests:
-storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
