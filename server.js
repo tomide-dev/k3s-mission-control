@@ -15,6 +15,11 @@ if (!API_KEY) {
     console.warn("⚠️ WARNING: API_KEY is not set!");
 }
 
+// Add this line near 
+if (process.env.APP_ENV === 'production') {
+    throw new Error("Deliberate crash for rollback demo!");
+}
+
 // ✅ Visit logger (writes to mounted volume)
 function logVisit() {
     const logFile = path.join('/app/data', 'visits.log');
