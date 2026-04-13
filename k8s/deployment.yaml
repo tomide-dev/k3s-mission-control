@@ -23,7 +23,13 @@ spec:
 
           envFrom:
             - configMapRef:
-                name: mission-control-config  # inject all keys as env vars
+                name: mission-control-config
+            - secretRef:
+                name: mission-control-secret
+
+          volumeMounts:  
+            - name: app-storage
+              mountPath: /app/data
 
           resources:
             requests:
