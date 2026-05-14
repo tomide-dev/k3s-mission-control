@@ -2,6 +2,11 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const path = require('path');
+const client = require('prom-client');
+
+// Prometheus metrics
+const register = client.register;
+client.collectDefaultMetrics();
 
 // Environment variables
 const API_KEY = process.env.API_KEY;
@@ -33,6 +38,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+// Health endpoint
 app.get('/health', (req, res) => {
     res.json({
         status: 'ok',
@@ -44,9 +50,13 @@ app.get('/health', (req, res) => {
     });
 });
 
-// Expose config
+// Config endpoint
 app.get('/config', (req, res) => {
-    res.json({ appName: APP_NAME, env: APP_ENV, version: VERSION });
+    res.json({
+        appName: APP_NAME,
+        env: APP_ENV,
+        version: VERSION
+    });
 });
 
 // ✅ Logs endpoint
@@ -59,6 +69,12 @@ app.get('/logs', (req, res) => {
     } catch (e) {
         res.type('text/plain').send('Log file not found. Try visiting / first.');
     }
+});
+
+// ✅ Prometheus metrics endpoint
+app.get('/metrics', async (req, res) => {
+    res.set('Content-Type', register.contentType);
+    res.send(await register.metrics());
 });
 
 // Static files
